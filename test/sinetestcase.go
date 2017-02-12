@@ -133,7 +133,11 @@ func (te *SineTestElement) getGoertzelPerSineTestElement() error {
 			var magnitudesCleaned []float64
 			// calculate the signal magnitude for the given tone
 			for _, data := range te.AudioStream.In.GetData() {
-				magnitudes = append(magnitudes, sound.CalcGoertzel(tone.Frequency, te.AudioStream.Samplingrate, sound.MonoSamples(data[0])))
+				if audioChId == sound.LEFT {
+					magnitudes = append(magnitudes, sound.CalcGoertzel(tone.Frequency, te.AudioStream.Samplingrate, sound.MonoSamples(data[0])))
+				} else {
+					magnitudes = append(magnitudes, sound.CalcGoertzel(tone.Frequency, te.AudioStream.Samplingrate, sound.MonoSamples(data[1])))
+				}
 			}
 			if len(magnitudes) > 5 {
 				// remove the values at the beginning and end as they might not be correct
