@@ -114,6 +114,14 @@ func createSineTestElement(pbSTE *icd.SineTestElement) (SineTestElement, error) 
 	}
 
 	if direction == sound.INPUT {
+
+		if _, ok := chs[sound.LEFT]; !ok {
+			chs[sound.LEFT] = sound.Channel{
+				AudioChId: sound.LEFT,
+				// Tones:     []sound.Tone{sound.Tone{0.0, 0.0}},
+			}
+		}
+
 		in := sound.Recorder{}
 		STE.AudioStream.In = &in
 	}
