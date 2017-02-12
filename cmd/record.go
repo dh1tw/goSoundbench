@@ -47,7 +47,7 @@ func init() {
 	RootCmd.AddCommand(recordCmd)
 	recordCmd.Flags().StringVarP(&deviceName, "device", "D", "default", "Input device")
 	recordCmd.Flags().Float64VarP(&samplingrate, "samplingrate", "s", 48000, "Sampling rate for the input device")
-	recordCmd.Flags().StringVarP(&channels, "channels", "c", "mono", "Input channels (left, right, both, mono)")
+	recordCmd.Flags().StringVarP(&channels, "channels", "c", "both", "Input channels (left, right, both)")
 	recordCmd.Flags().DurationVarP(&duration, "duration", "d", 5e9, "Duration in seconds")
 	recordCmd.Flags().StringVarP(&filename, "filename", "f", "recording.wav", "Name of the recording file")
 	recordCmd.Flags().IntVarP(&frames, "frames", "F", 1024, "Frames per Buffer")
@@ -56,16 +56,23 @@ func init() {
 func recordToFile() {
 
 	as := sound.AudioStream{}
+	as.Channels = make(map[int]sound.Channel)
 	as.DeviceName = deviceName
 	as.Samplingrate = samplingrate
 	as.FramesPerBuffer = frames
 	as.Direction = sound.INPUT
 
 	switch strings.ToUpper(channels) {
-	case "LEFT", "RIGHT", "BOTH":
-		as.Channels = sound.STEREO
-	case "MONO":
-		as.Channels = sound.MONO
+	case "LEFT":
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+	case "RIGHT":
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
+	case "BOTH":
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
+	default:
+		fmt.Println("Unknown Channel:", channels)
+		os.Exit(-1)
 	}
 
 	// get actual default audio output device
@@ -125,7 +132,7 @@ func recordToFile() {
 	// setup a wav.Writer which will correctly set the wav file header
 	writer := wav.NewWriter(f,
 		uint32(recLen*as.FramesPerBuffer), // numSamples
-		uint16(as.Channels),               // numChannels
+		uint16(len(as.Channels)),          // numChannels
 		uint32(as.Samplingrate),           // samplingrate
 		uint16(16))                        // bits per sample
 
@@ -136,7 +143,7 @@ func recordToFile() {
 		for j := 0; j < as.FramesPerBuffer; j++ {
 			wavSample := wav.Sample{}
 			wavSample.Values[0] = int(float32(recordedData[i][0][j]) * 32768)
-			if as.Channels == 2 {
+			if len(as.Channels) == 2 {
 				wavSample.Values[1] = int(float32(recordedData[i][1][j]) * 32768)
 			}
 			wavSamples = append(wavSamples, wavSample)

@@ -15,8 +15,7 @@ type SineTestCase struct {
 
 type SineTestElement struct {
 	sound.AudioStream
-	Channels map[int]sound.Channel
-	results  []SineTestElementResult
+	results []SineTestElementResult
 }
 
 // Setup initializes the PortAudio System and creates the Streams
@@ -125,7 +124,7 @@ func (te *SineTestElement) getGoertzelPerSineTestElement() error {
 	sTer := SineTestElementResult{}
 	sTer.DeviceName = te.DeviceName
 
-	for audioChId, audioCh := range te.Channels {
+	for audioChId, audioCh := range te.AudioStream.Channels {
 
 		tones := sound.Tones{}
 

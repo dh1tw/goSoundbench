@@ -48,6 +48,7 @@ func init() {
 func generateNoise() {
 
 	as := sound.AudioStream{}
+	as.Channels = make(map[int]sound.Channel)
 	as.DeviceName = deviceName
 	as.Samplingrate = samplingrate
 	as.FramesPerBuffer = frames
@@ -70,13 +71,22 @@ func generateNoise() {
 	switch strings.ToUpper(channels) {
 	case "LEFT":
 		out.Left = true
-		as.Channels = sound.STEREO
+		out.Right = false
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
 	case "RIGHT":
+		out.Left = false
 		out.Right = true
-		as.Channels = sound.STEREO
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
 	case "BOTH":
 		out.Left = true
-		as.Channels = sound.MONO
+		out.Right = true
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
+	default:
+		fmt.Println("Unknown Channel:", channels)
+		os.Exit(-1)
 	}
 
 	if err := as.Initialize(); err != nil {

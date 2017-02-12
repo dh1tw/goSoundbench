@@ -53,6 +53,7 @@ func init() {
 func generateSinewave() {
 
 	as := sound.AudioStream{}
+	as.Channels = make(map[int]sound.Channel)
 	as.DeviceName = deviceName
 	as.Samplingrate = samplingrate
 	as.FramesPerBuffer = frames
@@ -77,18 +78,23 @@ func generateSinewave() {
 		out.TonesL = append(out.TonesL, sound.Tone{frequency, amplitude})
 		out.TonesR = append(out.TonesR, sound.Tone{0, 0})
 		out.StepL = frequency / as.Samplingrate
-		as.Channels = sound.STEREO
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
 	case "RIGHT":
 		out.TonesL = append(out.TonesL, sound.Tone{0, 0})
 		out.TonesR = append(out.TonesR, sound.Tone{frequency, amplitude})
 		out.StepR = frequency / as.Samplingrate
-		as.Channels = sound.STEREO
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+		as.Channels[sound.RIGHT] = sound.Channel{AudioChId: sound.RIGHT}
 	case "BOTH":
 		out.TonesL = append(out.TonesL, sound.Tone{frequency, amplitude})
 		// out.TonesR = append(out.TonesR, sound.Tone{freq, amplitude})
 		out.StepL = frequency / as.Samplingrate
 		// out.StepR = freq / as.Samplingrate
-		as.Channels = sound.MONO
+		as.Channels[sound.LEFT] = sound.Channel{AudioChId: sound.LEFT}
+	default:
+		fmt.Println("Unknown Channel:", channels)
+		os.Exit(-1)
 	}
 
 	if err := as.Initialize(); err != nil {

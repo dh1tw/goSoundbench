@@ -46,7 +46,7 @@ type AudioStream struct {
 	DeviceName      string
 	Direction       int
 	Samplingrate    float64
-	Channels        int
+	Channels        map[int]Channel
 	FramesPerBuffer int
 	device          *portaudio.DeviceInfo
 	stream          *portaudio.Stream
@@ -123,14 +123,15 @@ func (as *AudioStream) createStream() error {
 	var err error
 
 	// accept only 1 or 2 channels
-	if as.Channels > 2 || as.Channels <= 0 {
+	if len(as.Channels) > 2 || len(as.Channels) <= 0 {
+		fmt.Println("as.Channels", as.Channels)
 		return &SoundbenchError{ECHANNEL, as.DeviceName, ""}
 	}
 
 	// setup AudioStream for Play
 	if as.Direction == OUTPUT {
 
-		streamDeviceParm := portaudio.StreamDeviceParameters{Device: as.device, Channels: as.Channels}
+		streamDeviceParm := portaudio.StreamDeviceParameters{Device: as.device, Channels: len(as.Channels)}
 
 		var sp portaudio.StreamParameters
 
@@ -142,14 +143,13 @@ func (as *AudioStream) createStream() error {
 
 		as.stream, err = portaudio.OpenStream(sp, as.writeAudioStreamCb)
 		if err != nil {
-			fmt.Println("problem", as.Channels)
 			return err
 		}
 
 		// setup AudioStream for Record
 	} else if as.Direction == INPUT {
 
-		streamDeviceParm := portaudio.StreamDeviceParameters{Device: as.device, Channels: as.Channels}
+		streamDeviceParm := portaudio.StreamDeviceParameters{Device: as.device, Channels: len(as.Channels)}
 		sp := portaudio.StreamParameters{
 			Input:           streamDeviceParm,
 			FramesPerBuffer: as.FramesPerBuffer,

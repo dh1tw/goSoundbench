@@ -93,7 +93,7 @@ func createSineTestElement(pbSTE *icd.SineTestElement) (SineTestElement, error) 
 	STE.AudioStream.Direction = direction
 	STE.AudioStream.Samplingrate = samplingrate
 	STE.AudioStream.FramesPerBuffer = bufferlength
-	STE.AudioStream.Channels = len(chs)
+	STE.AudioStream.Channels = chs
 
 	if direction == sound.OUTPUT {
 		out := sound.SinusOut{}
@@ -110,7 +110,6 @@ func createSineTestElement(pbSTE *icd.SineTestElement) (SineTestElement, error) 
 	if direction == sound.INPUT {
 		in := sound.Recorder{}
 		STE.AudioStream.In = &in
-		STE.Channels = chs
 	}
 
 	return STE, nil
