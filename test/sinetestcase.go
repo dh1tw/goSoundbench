@@ -157,7 +157,11 @@ func (te *SineTestElement) getGoertzelPerSineTestElement() error {
 			})
 		}
 
-		sTer.Channels = append(sTer.Channels, sound.Channel{AudioChId: audioChId, Tones: tones})
+		// ignore the dummy audioCh in case just the right channel was ment
+		// to be recorded
+		if len(audioCh.Tones) > 0 {
+			sTer.Channels = append(sTer.Channels, sound.Channel{AudioChId: audioChId, Tones: tones})
+		}
 	}
 	te.results = append(te.results, sTer)
 	return nil
