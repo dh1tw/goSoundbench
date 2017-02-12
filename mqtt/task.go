@@ -3,7 +3,7 @@ package mqttserver
 import (
 	"log"
 
-	test "github.com/dh1tw/soundbench/test"
+	test "github.com/dh1tw/goSoundbench/test"
 )
 
 // ToWireMsg contains the topic and data to be send to the MQTT Broker

@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dh1tw/soundbench/mqtt"
-	"github.com/dh1tw/soundbench/utils"
+	"github.com/dh1tw/goSoundbench/mqtt"
+	"github.com/dh1tw/goSoundbench/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

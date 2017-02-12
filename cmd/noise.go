@@ -26,7 +26,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dh1tw/soundbench/sound"
+	"github.com/dh1tw/goSoundbench/sound"
 	"github.com/gordonklaus/portaudio"
 	"github.com/spf13/cobra"
 )

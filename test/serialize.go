@@ -3,8 +3,8 @@ package test
 import (
 	"errors"
 
-	icd "github.com/dh1tw/soundbench/icd"
-	"github.com/dh1tw/soundbench/sound"
+	icd "github.com/dh1tw/goSoundbench/icd"
+	"github.com/dh1tw/goSoundbench/sound"
 	"github.com/gogo/protobuf/proto"
 	"github.com/spf13/viper"
 )

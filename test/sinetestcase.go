@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/dh1tw/soundbench/sound"
+	"github.com/dh1tw/goSoundbench/sound"
 )
 
 type SineTestCase struct {

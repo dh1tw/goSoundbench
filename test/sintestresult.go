@@ -3,7 +3,7 @@ package test
 import (
 	"fmt"
 
-	"github.com/dh1tw/soundbench/sound"
+	"github.com/dh1tw/goSoundbench/sound"
 )
 
 type SineTestResult struct {
