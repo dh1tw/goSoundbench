@@ -70,8 +70,8 @@ func MqttServer() {
 
 	ms := mqttserver.MqttSettings{
 		Transport:  "tcp",
-		BrokerURL:  viper.GetString("mqtt.broker_url"),
-		BrokerPort: viper.GetInt("mqtt.broker_port"),
+		BrokerURL:  viper.GetString("mqtt.broker-url"),
+		BrokerPort: viper.GetInt("mqtt.broker-port"),
 		ClientID:   utils.RandSeq(10),
 		Topics:     topics,
 	}
