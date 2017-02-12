@@ -1,0 +1,59 @@
+package Soundbench;
+
+
+message TestCases{
+    repeated SineTestCase sineTestCases = 1;
+}
+
+message SineTestCase{
+    required string  id = 1;
+    required uint32 duration = 2; //seconds
+    repeated SineTestElement elements = 3;
+    repeated Gpio gpio = 4;
+}
+
+message SineTestElement{
+    required string channel = 1;
+    required DIRECTIONS direction = 2;
+    optional int32 samplingrate = 3;
+    optional int32 bufferlength = 4;
+    repeated AudioChannel audioChannels = 5;
+}
+
+message TestResults{
+    optional SineTestResult sineTestResult = 1;
+}
+
+message SineTestResult{
+    required string id = 1;
+    repeated SineTestElementResults results = 2; 
+}
+
+message SineTestElementResults{
+    required string channel = 1;
+    repeated AudioChannel audioChannels = 2;
+}
+
+message AudioChannel{
+    required ACHID achid = 1;
+    repeated Tone tones = 2;
+}
+
+message Tone{
+    optional float frequency = 1;
+    optional float amplitude = 2;
+}
+
+enum DIRECTIONS {
+    INPUT = 1;
+    OUTPUT = 2;
+}
+
+enum ACHID {
+    LEFT = 1;
+    RIGHT = 2;
+}
+
+message Gpio{
+    repeated bool pin = 1;
+}
