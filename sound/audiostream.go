@@ -21,6 +21,13 @@ const (
 	RIGHT = 2
 )
 
+type Tones []Tone
+
+type Tone struct {
+	Frequency float64
+	Amplitude float64
+}
+
 type Channel struct {
 	AudioChId int
 	Tones     Tones

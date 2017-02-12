@@ -89,13 +89,19 @@ func createSineTestElement(pbSTE *icd.SineTestElement) (SineTestElement, error) 
 			chs[chID] = ch
 		}
 	}
-	STE.AudioStream.DeviceName = deviceName
-	STE.AudioStream.Direction = direction
-	STE.AudioStream.Samplingrate = samplingrate
-	STE.AudioStream.FramesPerBuffer = bufferlength
-	STE.AudioStream.Channels = chs
 
 	if direction == sound.OUTPUT {
+
+		// create a muted LEFT channel (writing silence), otherwise
+		// portaudio would old use one channel and consider it the
+		// left channel
+		if _, ok := chs[sound.LEFT]; !ok {
+			chs[sound.LEFT] = sound.Channel{
+				AudioChId: sound.LEFT,
+				Tones:     []sound.Tone{sound.Tone{0.0, 0.0}},
+			}
+		}
+
 		out := sound.SinusOut{}
 		if _, ok := chs[sound.LEFT]; ok {
 			out.TonesL = chs[sound.LEFT].Tones
@@ -111,6 +117,12 @@ func createSineTestElement(pbSTE *icd.SineTestElement) (SineTestElement, error) 
 		in := sound.Recorder{}
 		STE.AudioStream.In = &in
 	}
+
+	STE.AudioStream.DeviceName = deviceName
+	STE.AudioStream.Direction = direction
+	STE.AudioStream.Samplingrate = samplingrate
+	STE.AudioStream.FramesPerBuffer = bufferlength
+	STE.AudioStream.Channels = chs
 
 	return STE, nil
 }

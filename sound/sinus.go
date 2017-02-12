@@ -2,13 +2,6 @@ package sound
 
 import "math"
 
-type Tones []Tone
-
-type Tone struct {
-	Frequency float64
-	Amplitude float64
-}
-
 type SinusOut struct {
 	TonesL Tones
 	TonesR Tones
