@@ -59,7 +59,7 @@ func init() {
 	// Cobra supports Persistent Flags, which, if defined here,
 	// will be global for your application.
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.soundbench.yaml)")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.goSoundbench.toml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -68,9 +68,9 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	}
 
-	viper.SetConfigName(".soundbench") // name of config file (without extension)
-	viper.AddConfigPath("$HOME")       // adding home directory as first search path
-	viper.AutomaticEnv()               // read in environment variables that match
+	viper.SetConfigName(".goSoundbench") // name of config file (without extension)
+	viper.AddConfigPath("$HOME")         // adding home directory as first search path
+	viper.AutomaticEnv()                 // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {

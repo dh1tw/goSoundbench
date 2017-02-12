@@ -1,0 +1,12 @@
+[mqtt]
+broker-url = "localhost"
+broker-port = 1883
+
+[topic-device-mapping]
+"device1/operator" = "CH1"
+"device1/user" = "CH2"
+
+[audio]
+samplingrate = 48000
+frame-length-input = 24000
+frame-length-output = 1024
