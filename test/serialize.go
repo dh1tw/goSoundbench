@@ -60,7 +60,7 @@ func (STR *SineTestResult) Serialize() ([]byte, error) {
 		reverseMap := reverseMap(mapping)
 
 		if _, ok := reverseMap[res.DeviceName]; ok {
-			deviceName := mapping[res.DeviceName]
+			deviceName := reverseMap[res.DeviceName]
 			pbSTER.Channel = &deviceName
 		} else {
 			return []byte{}, errors.New("could not find device mapping")
